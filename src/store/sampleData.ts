@@ -298,10 +298,10 @@ export const SAMPLE_LESSONS: Lesson[] = [
     endTime: "17:15",
     status: "completed",
     isRecurring: true,
-    notes: "バッハ二重協奏曲",
+    notes: "Mbot：ライントレースアルゴリズム",
     attendanceStatus: "attended",
-    lessonContent: "バッハ二重協奏曲 第1楽章ボウイング確認",
-    homeworkNote: "第1楽章 mm.1-32 インtonation重点練習",
+    lessonContent: "Mbot：ライントレースの仕組みとセンサーキャリブレーション",
+    homeworkNote: "コースを変えてライントレースが動くか試してみる",
   },
   {
     id: "l12",

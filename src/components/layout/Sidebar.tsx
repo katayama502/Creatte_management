@@ -9,7 +9,7 @@ import {
   FileText,
   Calendar,
   GraduationCap,
-  Music2,
+  Code2,
   Settings,
   ChevronLeft,
   ChevronRight,
@@ -61,7 +61,7 @@ export function Sidebar() {
         )}
       >
         <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-500 shrink-0">
-          <Music2 className="w-4 h-4 text-white" />
+          <Code2 className="w-4 h-4 text-white" />
         </div>
         {!collapsed && (
           <div className="overflow-hidden">
@@ -69,7 +69,7 @@ export function Sidebar() {
               クリエット
             </p>
             <p className="text-xs text-brand-300 mt-0.5 leading-none">
-              Music School
+              プログラミング教室
             </p>
           </div>
         )}

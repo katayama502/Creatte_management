@@ -143,3 +143,43 @@ export interface ApiResponse<T> {
   data: T;
   error?: string;
 }
+
+// ===== Settings =====
+export interface Course {
+  id: string
+  name: string
+  description: string
+  color: string          // hex color
+  targetAge: string      // e.g. "小学1年〜6年"
+  active: boolean
+}
+
+export type DiscountType = 'percentage' | 'fixed'
+
+export interface Discount {
+  id: string
+  name: string           // e.g. "兄弟割引"
+  type: DiscountType
+  value: number          // % or yen
+  description: string
+  active: boolean
+  stackable: boolean     // whether this discount stacks with others
+}
+
+export interface FeeRule {
+  frequency: CourseFrequency
+  amount: number
+}
+
+export interface SchoolSettings {
+  name: string           // e.g. "クリエットプログラミング教室"
+  subtitle: string       // e.g. "プログラミング教室"
+  address: string
+  phone: string
+  email: string
+  website: string
+  trialFee: number       // 体験会費
+  enrollmentFee: number  // 入会金
+  materialsFee: number   // 教材費（初回）
+  notes: string          // 規約・備考
+}
