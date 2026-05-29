@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // For now: authenticated users can read/write all collections
+    // TODO: Add role-based access (admin vs teacher)
+    match /{document=**} {
+      allow read, write: if true; // Change to: if request.auth != null; when auth is set up
+    }
+  }
+}
