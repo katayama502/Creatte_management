@@ -1,13 +1,14 @@
 'use client'
 
-import { useState } from 'react'
-import { Student, StudentStatus, CourseFrequency, AttendanceStatus } from '@/types'
+import { useState, useEffect } from 'react'
+import { Student, StudentStatus, CourseFrequency, AttendanceStatus, ScratchWork, CurriculumProgress } from '@/types'
 import { useStudentStore } from '@/store/studentStore'
 import { useTeacherStore } from '@/store/teacherStore'
 import { useScheduleStore } from '@/store/scheduleStore'
 import { useFeeStore } from '@/store/feeStore'
+import { useScratchStore } from '@/store/scratchStore'
 import { cn } from '@/lib/utils'
-import { X, Trash2, ArrowRightLeft, BookOpen, ChevronRight, CheckCircle2, AlertCircle, CreditCard, CalendarDays } from 'lucide-react'
+import { X, Trash2, ArrowRightLeft, BookOpen, ChevronRight, CheckCircle2, AlertCircle, CreditCard, CalendarDays, Code2, GraduationCap, Plus, ExternalLink, Star, Pencil } from 'lucide-react'
 import LessonHistoryPanel from './LessonHistoryPanel'
 import AttendanceStats from './AttendanceStats'
 
@@ -41,7 +42,7 @@ const ATTENDANCE_COLORS: Record<AttendanceStatus, string> = {
   makeup: 'bg-blue-100 text-blue-700',
 }
 
-type TabType = '基本情報' | 'レッスン履歴' | '出席記録' | '月謝'
+type TabType = '基本情報' | 'レッスン履歴' | '出席記録' | '月謝' | 'Scratch作品' | 'カリキュラム'
 
 export default function StudentDetailModal({
   student,
@@ -54,6 +55,7 @@ export default function StudentDetailModal({
   const { teachers } = useTeacherStore()
   const { getFeeByStudent, markAsPaid } = useFeeStore()
   const getLessonsByStudent = useScheduleStore((s) => s.getLessonsByStudent)
+  const { addWork, updateWork, deleteWork, addProgress, deleteProgress, getWorksByStudent, getProgressByStudent, subscribeByStudent } = useScratchStore()
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [newStatus, setNewStatus] = useState<StudentStatus>(student.status)
   const [newFrequency, setNewFrequency] = useState<CourseFrequency | undefined>(
@@ -61,7 +63,42 @@ export default function StudentDetailModal({
   )
   const [activeTab, setActiveTab] = useState<TabType>('基本情報')
 
+  // Scratch/Curriculum forms
+  const [addingWork, setAddingWork] = useState(false)
+  const [workForm, setWorkForm] = useState({ title: '', url: '', description: '', createdDate: new Date().toISOString().split('T')[0], isPortfolio: false })
+  const [editingWork, setEditingWork] = useState<ScratchWork | null>(null)
+  const [addingProgress, setAddingProgress] = useState(false)
+  const [progressForm, setProgressForm] = useState({ materialName: '', completedAt: new Date().toISOString().split('T')[0], notes: '' })
+
+  // Subscribe to Firebase data when the modal opens
+  useEffect(() => {
+    const unsub = subscribeByStudent(student.id)
+    return unsub
+  }, [student.id, subscribeByStudent])
+
+  const scratchWorks = getWorksByStudent(student.id)
+  const curriculumProgress = getProgressByStudent(student.id)
+
   const teacher = teachers.find((t) => t.id === student.teacherId)
+
+  function handleAddWork() {
+    if (!workForm.title.trim()) return
+    if (editingWork) {
+      updateWork(editingWork.id, workForm)
+      setEditingWork(null)
+    } else {
+      addWork({ ...workForm, studentId: student.id })
+    }
+    setWorkForm({ title: '', url: '', description: '', createdDate: new Date().toISOString().split('T')[0], isPortfolio: false })
+    setAddingWork(false)
+  }
+
+  function handleAddProgress() {
+    if (!progressForm.materialName.trim()) return
+    addProgress({ ...progressForm, studentId: student.id })
+    setProgressForm({ materialName: '', completedAt: new Date().toISOString().split('T')[0], notes: '' })
+    setAddingProgress(false)
+  }
 
   const handleApplyChanges = () => {
     if (newStatus !== student.status) {
@@ -94,7 +131,7 @@ export default function StudentDetailModal({
     .sort((a, b) => (a.date > b.date ? -1 : 1))
     .slice(0, 10)
 
-  const TABS: TabType[] = ['基本情報', 'レッスン履歴', '出席記録', '月謝']
+  const TABS: TabType[] = ['基本情報', 'レッスン履歴', '出席記録', '月謝', 'Scratch作品', 'カリキュラム']
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
@@ -350,6 +387,220 @@ export default function StudentDetailModal({
             <div className="space-y-3">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">月謝情報</p>
               <p className="text-sm text-gray-400 text-center py-8">月謝情報はここに表示されます</p>
+            </div>
+          )}
+
+          {/* ------------------------------------------------------------------ */}
+          {/* Tab: Scratch作品 */}
+          {/* ------------------------------------------------------------------ */}
+          {activeTab === 'Scratch作品' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide flex items-center gap-1.5">
+                  <Code2 className="w-3.5 h-3.5" />Scratch作品 ({scratchWorks.length}件)
+                </p>
+                <button
+                  onClick={() => { setAddingWork(true); setEditingWork(null); }}
+                  className="flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-700 font-medium"
+                >
+                  <Plus className="w-3.5 h-3.5" />追加
+                </button>
+              </div>
+
+              {(addingWork || editingWork) && (
+                <div className="p-3 bg-indigo-50 rounded-xl space-y-2.5">
+                  <input
+                    value={editingWork ? editingWork.title : workForm.title}
+                    onChange={(e) => editingWork
+                      ? setEditingWork({ ...editingWork, title: e.target.value })
+                      : setWorkForm({ ...workForm, title: e.target.value })
+                    }
+                    className="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="作品タイトル *"
+                  />
+                  <input
+                    value={editingWork ? (editingWork.url ?? '') : workForm.url}
+                    onChange={(e) => editingWork
+                      ? setEditingWork({ ...editingWork, url: e.target.value })
+                      : setWorkForm({ ...workForm, url: e.target.value })
+                    }
+                    className="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="Scratch URL（任意）"
+                  />
+                  <div className="grid grid-cols-2 gap-2">
+                    <input
+                      type="date"
+                      value={editingWork ? editingWork.createdDate : workForm.createdDate}
+                      onChange={(e) => editingWork
+                        ? setEditingWork({ ...editingWork, createdDate: e.target.value })
+                        : setWorkForm({ ...workForm, createdDate: e.target.value })
+                      }
+                      className="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                    <label className="flex items-center gap-2 text-sm text-gray-700">
+                      <input
+                        type="checkbox"
+                        checked={editingWork ? (editingWork.isPortfolio ?? false) : workForm.isPortfolio}
+                        onChange={(e) => editingWork
+                          ? setEditingWork({ ...editingWork, isPortfolio: e.target.checked })
+                          : setWorkForm({ ...workForm, isPortfolio: e.target.checked })
+                        }
+                        className="w-4 h-4 rounded text-indigo-600"
+                      />
+                      <Star className="w-3.5 h-3.5 text-yellow-400" />ポートフォリオ
+                    </label>
+                  </div>
+                  <textarea
+                    value={editingWork ? (editingWork.description ?? '') : workForm.description}
+                    onChange={(e) => editingWork
+                      ? setEditingWork({ ...editingWork, description: e.target.value })
+                      : setWorkForm({ ...workForm, description: e.target.value })
+                    }
+                    rows={2}
+                    className="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="作品の説明（任意）"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => { setAddingWork(false); setEditingWork(null); }}
+                      className="flex-1 py-1.5 text-xs border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-100"
+                    >キャンセル</button>
+                    <button
+                      onClick={handleAddWork}
+                      className="flex-1 py-1.5 text-xs bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                    >{editingWork ? '更新する' : '追加する'}</button>
+                  </div>
+                </div>
+              )}
+
+              {scratchWorks.length === 0 && !addingWork ? (
+                <p className="text-sm text-gray-400 text-center py-8">Scratch作品がありません</p>
+              ) : (
+                <div className="space-y-2.5">
+                  {scratchWorks.map((work) => (
+                    <div key={work.id} className="flex gap-3 p-3 bg-gray-50 rounded-xl group">
+                      <div className="w-9 h-9 rounded-lg bg-orange-100 flex items-center justify-center shrink-0">
+                        <Code2 className="w-4 h-4 text-orange-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <p className="text-sm font-medium text-gray-800 truncate">{work.title}</p>
+                          {work.isPortfolio && <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400 shrink-0" />}
+                        </div>
+                        <p className="text-xs text-gray-400 mt-0.5">{work.createdDate}</p>
+                        {work.description && <p className="text-xs text-gray-500 mt-0.5 truncate">{work.description}</p>}
+                        {work.url && (
+                          <a
+                            href={work.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-0.5 text-xs text-indigo-600 hover:underline mt-0.5"
+                          >
+                            <ExternalLink className="w-3 h-3" />Scratchで見る
+                          </a>
+                        )}
+                      </div>
+                      <div className="flex items-start gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                          onClick={() => { setEditingWork(work); setAddingWork(false); }}
+                          className="p-1 rounded text-gray-400 hover:text-indigo-600"
+                        ><Pencil className="w-3.5 h-3.5" /></button>
+                        <button
+                          onClick={() => deleteWork(work.id)}
+                          className="p-1 rounded text-gray-400 hover:text-red-600"
+                        ><Trash2 className="w-3.5 h-3.5" /></button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ------------------------------------------------------------------ */}
+          {/* Tab: カリキュラム進捗 */}
+          {/* ------------------------------------------------------------------ */}
+          {activeTab === 'カリキュラム' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide flex items-center gap-1.5">
+                  <GraduationCap className="w-3.5 h-3.5" />カリキュラム進捗 ({curriculumProgress.length}件)
+                </p>
+                <button
+                  onClick={() => setAddingProgress(!addingProgress)}
+                  className="flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-700 font-medium"
+                >
+                  <Plus className="w-3.5 h-3.5" />追加
+                </button>
+              </div>
+
+              {addingProgress && (
+                <div className="p-3 bg-indigo-50 rounded-xl space-y-2.5">
+                  <input
+                    value={progressForm.materialName}
+                    onChange={(e) => setProgressForm({ ...progressForm, materialName: e.target.value })}
+                    className="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="教材名（例：Scratch入門 第3章）*"
+                  />
+                  <div className="grid grid-cols-2 gap-2">
+                    <input
+                      type="date"
+                      value={progressForm.completedAt}
+                      onChange={(e) => setProgressForm({ ...progressForm, completedAt: e.target.value })}
+                      className="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                    <input
+                      value={progressForm.notes}
+                      onChange={(e) => setProgressForm({ ...progressForm, notes: e.target.value })}
+                      className="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      placeholder="メモ（任意）"
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setAddingProgress(false)}
+                      className="flex-1 py-1.5 text-xs border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-100"
+                    >キャンセル</button>
+                    <button
+                      onClick={handleAddProgress}
+                      className="flex-1 py-1.5 text-xs bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                    >追加する</button>
+                  </div>
+                </div>
+              )}
+
+              {curriculumProgress.length === 0 && !addingProgress ? (
+                <p className="text-sm text-gray-400 text-center py-8">カリキュラム記録がありません</p>
+              ) : (
+                <div className="relative">
+                  {/* Timeline line */}
+                  <div className="absolute left-3.5 top-0 bottom-0 w-0.5 bg-indigo-100" />
+                  <div className="space-y-3">
+                    {curriculumProgress.map((p, i) => (
+                      <div key={p.id} className="flex gap-3 group">
+                        <div className="w-7 h-7 rounded-full bg-indigo-500 flex items-center justify-center shrink-0 z-10 text-white text-xs font-bold">
+                          {curriculumProgress.length - i}
+                        </div>
+                        <div className="flex-1 pb-2">
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              <p className="text-sm font-medium text-gray-800">{p.materialName}</p>
+                              <p className="text-xs text-gray-400 mt-0.5">{p.completedAt}</p>
+                              {p.notes && <p className="text-xs text-gray-500 mt-0.5">{p.notes}</p>}
+                            </div>
+                            <button
+                              onClick={() => deleteProgress(p.id)}
+                              className="opacity-0 group-hover:opacity-100 p-1 rounded text-gray-300 hover:text-red-500 transition-opacity shrink-0"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

@@ -2,8 +2,8 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { DashboardPanel, DashboardPanelType } from '@/types';
 
-// Extend the panel type locally to include fee_status
-export type ExtendedPanelType = DashboardPanelType | 'fee_status';
+// Extend the panel type locally to include additional panels
+export type ExtendedPanelType = DashboardPanelType | 'fee_status' | 'tasks' | 'sponsor_progress';
 
 export interface ExtendedDashboardPanel extends Omit<DashboardPanel, 'type'> {
   type: ExtendedPanelType;
@@ -17,10 +17,12 @@ interface DashboardStore {
 
 const INITIAL_PANELS: ExtendedDashboardPanel[] = [
   { id: 'stats', title: '統計サマリー', type: 'stats', position: 0, visible: true },
-  { id: 'recent_students', title: '最近の生徒', type: 'recent_students', position: 1, visible: true },
-  { id: 'upcoming_lessons', title: '直近のレッスン', type: 'upcoming_lessons', position: 2, visible: true },
-  { id: 'teacher_load', title: '講師稼働状況', type: 'teacher_load', position: 3, visible: true },
-  { id: 'fee_status', title: '月謝状況', type: 'fee_status', position: 4, visible: true },
+  { id: 'tasks', title: 'タスク管理', type: 'tasks', position: 1, visible: true },
+  { id: 'sponsor_progress', title: '協賛企業 進捗', type: 'sponsor_progress', position: 2, visible: true },
+  { id: 'upcoming_lessons', title: '直近のレッスン', type: 'upcoming_lessons', position: 3, visible: true },
+  { id: 'recent_students', title: '最近の生徒', type: 'recent_students', position: 4, visible: true },
+  { id: 'teacher_load', title: '講師稼働状況', type: 'teacher_load', position: 5, visible: true },
+  { id: 'fee_status', title: '月謝状況', type: 'fee_status', position: 6, visible: true },
 ];
 
 export const useDashboardStore = create<DashboardStore>()(

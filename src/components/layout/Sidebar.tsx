@@ -13,6 +13,8 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  CheckSquare,
+  Building2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -28,9 +30,11 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { label: "ダッシュボード", href: "/", icon: LayoutDashboard },
+  { label: "タスク管理", href: "/tasks", icon: CheckSquare },
   { label: "生徒管理", href: "/students", icon: Users },
-  { label: "入会申し込み", href: "/enrollment", icon: FileText },
   { label: "スケジュール", href: "/schedule", icon: Calendar },
+  { label: "入会申し込み", href: "/enrollment", icon: FileText },
+  { label: "協賛企業管理", href: "/sponsors", icon: Building2 },
   { label: "講師管理", href: "/teachers", icon: GraduationCap },
 ];
 
