@@ -36,23 +36,23 @@ export default function SettingsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Page Header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-4">
+      <div className="bg-white border-b border-gray-200 px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-indigo-100">
+          <div className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg bg-indigo-100 shrink-0">
             <Settings className="w-5 h-5 text-indigo-600" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">設定</h1>
-            <p className="text-sm text-gray-500 mt-0.5">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900">設定</h1>
+            <p className="text-xs md:text-sm text-gray-500 mt-0.5">
               スクールの基本情報・コース・料金を管理します
             </p>
           </div>
         </div>
       </div>
 
-      {/* Tab Bar */}
-      <div className="bg-white border-b border-gray-200 px-6">
-        <div className="flex items-center gap-2 py-3">
+      {/* Tab Bar — horizontally scrollable on mobile */}
+      <div className="bg-white border-b border-gray-200 px-4 md:px-6">
+        <div className="flex items-center gap-2 py-3 overflow-x-auto scrollbar-hidden">
           {TABS.map((tab) => {
             const Icon = tab.icon
             const isActive = activeTab === tab.id
@@ -60,14 +60,14 @@ export default function SettingsPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                className={`flex items-center gap-2 px-3 md:px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap shrink-0 ${
                   isActive
                     ? 'bg-indigo-600 text-white shadow-sm'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
                 <Icon className="w-4 h-4" />
-                {tab.label}
+                <span className="hidden sm:inline">{tab.label}</span>
               </button>
             )
           })}
@@ -75,7 +75,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Tab Content */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-3 md:p-6">
         {activeTab === 'school' && <SchoolInfoTab />}
         {activeTab === 'courses' && <CourseSettingsTab />}
         {activeTab === 'fees' && <FeeSettingsTab />}

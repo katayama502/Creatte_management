@@ -33,10 +33,10 @@ function DayPopover({ date, lessons, onClose, onAddLesson }: DayPopoverProps) {
   const students = useStudentStore((s) => s.students);
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-40 flex items-end sm:items-center justify-center sm:p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/20" />
       <div
-        className="relative z-10 bg-white rounded-xl shadow-xl border border-gray-100 w-80 max-h-96 overflow-y-auto"
+        className="relative z-10 bg-white rounded-t-xl sm:rounded-xl shadow-xl border border-gray-100 w-full sm:w-80 max-h-[60vh] sm:max-h-96 overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="sticky top-0 bg-white border-b border-gray-100 px-4 py-3 flex items-center justify-between">
@@ -145,7 +145,7 @@ export default function MonthlyCalendar({ year, month, onAddLesson }: MonthlyCal
               key={idx}
               onClick={() => setSelectedDay(isSelected ? null : day)}
               className={cn(
-                'min-h-[80px] p-1.5 border-b border-r border-gray-50 text-left flex flex-col gap-1',
+                'min-h-[56px] sm:min-h-[80px] p-1 sm:p-1.5 border-b border-r border-gray-50 text-left flex flex-col gap-1',
                 'hover:bg-indigo-50 transition-colors cursor-pointer',
                 !isCurrentMonth && 'bg-gray-50',
                 isSelected && 'bg-indigo-50 ring-1 ring-inset ring-indigo-300',

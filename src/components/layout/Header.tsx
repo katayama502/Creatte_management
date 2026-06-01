@@ -2,10 +2,11 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { Bell, User, ChevronDown, Search } from "lucide-react";
+import { Bell, User, ChevronDown, Search, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { GlobalSearch } from "./GlobalSearch";
 import { NotificationDropdown, useNotificationCount } from "./NotificationDropdown";
+import { useMobileNav } from "./MobileNavContext";
 
 // ============================================================
 // Route → page title mapping
@@ -56,6 +57,7 @@ export function Header({ className }: HeaderProps) {
   const title = getPageTitle(pathname);
   const today = formatTodayJa();
 
+  const { toggle: toggleMobileNav } = useMobileNav();
   const [searchOpen, setSearchOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
 
@@ -87,16 +89,30 @@ export function Header({ className }: HeaderProps) {
       <header
         className={cn(
           "sticky top-0 z-30 h-16",
-          "flex items-center justify-between px-6",
+          "flex items-center justify-between px-4 md:px-6",
           "bg-white/90 backdrop-blur-sm",
           "border-b border-gray-100",
           "shadow-sm",
           className
         )}
       >
-        {/* Left: Page title */}
-        <div className="flex items-center gap-4">
-          <h1 className="text-lg font-semibold text-gray-900 tracking-tight">
+        {/* Left: Hamburger (mobile) + Page title */}
+        <div className="flex items-center gap-3">
+          {/* Hamburger — mobile only */}
+          <button
+            onClick={toggleMobileNav}
+            className={cn(
+              "block md:hidden",
+              "flex items-center justify-center",
+              "w-9 h-9 rounded-lg",
+              "text-gray-500 hover:text-gray-700 hover:bg-gray-100",
+              "transition-colors duration-150"
+            )}
+            aria-label="メニューを開く"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <h1 className="text-sm md:text-lg font-semibold text-gray-900 tracking-tight">
             {title}
           </h1>
           <span className="hidden sm:block text-sm text-gray-400">{today}</span>

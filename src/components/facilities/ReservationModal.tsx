@@ -114,8 +114,8 @@ export default function ReservationModal({
   const colorDotClass = COLOR_OPTIONS.find((c) => c.value === selectedColor)?.bg ?? 'bg-indigo-500';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4 bg-black/50">
+      <div className="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl w-full max-w-md max-h-[92vh] overflow-y-auto">
         {/* Header with color accent */}
         <div className={cn('h-1.5 rounded-t-2xl', colorDotClass)} />
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">

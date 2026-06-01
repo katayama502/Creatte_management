@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from 'react';
 import { format } from 'date-fns';
+import { ja } from 'date-fns/locale';
 import { FacilityReservation, FacilityColor } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -85,7 +86,7 @@ export default function DayView({ currentDate, reservations, facilityColor, onSl
       {/* Date header */}
       <div className="px-6 py-3 border-b border-gray-200 shrink-0">
         <p className="text-base font-bold text-gray-900">
-          {format(currentDate, 'M月d日(E)', { locale: require('date-fns/locale/ja').ja })}
+          {format(currentDate, 'M月d日(E)', { locale: ja })}
         </p>
         <p className="text-xs text-gray-400">{dayReservations.length}件の予約</p>
       </div>

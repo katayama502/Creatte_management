@@ -85,7 +85,7 @@ function DroppableColumn({
   return (
     <div
       className={cn(
-        'flex flex-col rounded-xl border-2 transition-all duration-200 min-w-[260px] w-[260px] max-h-[calc(100vh-180px)]',
+        'flex flex-col rounded-xl border-2 transition-all duration-200 min-w-[240px] w-[240px] sm:min-w-[260px] sm:w-[260px] max-h-[calc(100vh-155px)] md:max-h-[calc(100vh-180px)]',
         bgColor,
         borderColor,
         isDraggingOver && 'border-indigo-400 shadow-lg scale-[1.01]'
@@ -195,7 +195,7 @@ export default function StudentKanban() {
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex gap-4 p-6 overflow-x-auto h-full">
+      <div className="flex gap-3 md:gap-4 p-3 md:p-6 overflow-x-auto h-full">
         {COLUMNS.map((col) => (
           <DroppableColumn
             key={col.status}

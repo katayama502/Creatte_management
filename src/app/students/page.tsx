@@ -39,45 +39,46 @@ export default function StudentsPage() {
   return (
     <div className="flex flex-col h-full min-h-screen bg-gray-50">
       {/* Page Header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="flex items-center justify-between mb-4">
+      <div className="bg-white border-b border-gray-200 px-4 md:px-6 py-3 md:py-4">
+        <div className="flex items-center justify-between gap-3 mb-3 md:mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">生徒管理</h1>
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900">生徒管理</h1>
             <p className="text-sm text-gray-500 mt-0.5">全 {students.length} 名</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
             {/* View Toggle */}
             <div className="flex items-center bg-gray-100 rounded-lg p-1">
               <button
                 onClick={() => setView('kanban')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-2 md:px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
                   view === 'kanban'
                     ? 'bg-white text-indigo-600 shadow-sm'
                     : 'text-gray-500 hover:text-gray-700'
                 }`}
               >
                 <LayoutGrid className="w-4 h-4" />
-                カンバン
+                <span className="hidden sm:inline">カンバン</span>
               </button>
               <button
                 onClick={() => setView('list')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-2 md:px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
                   view === 'list'
                     ? 'bg-white text-indigo-600 shadow-sm'
                     : 'text-gray-500 hover:text-gray-700'
                 }`}
               >
                 <List className="w-4 h-4" />
-                リスト
+                <span className="hidden sm:inline">リスト</span>
               </button>
             </div>
             {/* New Trial Button */}
             <button
               onClick={() => setIsTrialModalOpen(true)}
-              className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm"
+              className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-3 md:px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm min-h-[40px]"
             >
               <Plus className="w-4 h-4" />
-              体験会登録
+              <span className="hidden sm:inline">体験会登録</span>
+              <span className="sm:hidden">登録</span>
             </button>
           </div>
         </div>
