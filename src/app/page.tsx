@@ -134,7 +134,7 @@ export default function DashboardPage() {
     summary.noTeacher > 0;
 
   return (
-    <div className="flex flex-col gap-4 md:gap-6 max-w-7xl mx-auto w-full">
+    <div className="flex flex-col gap-4 md:gap-6 p-3 md:p-5 w-full">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
