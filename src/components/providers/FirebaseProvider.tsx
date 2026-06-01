@@ -7,6 +7,7 @@ import { useScheduleStore } from '@/store/scheduleStore'
 import { useFeeStore } from '@/store/feeStore'
 import { useTaskStore } from '@/store/taskStore'
 import { useSponsorStore } from '@/store/sponsorStore'
+import { useFacilityStore } from '@/store/facilityStore'
 
 export default function FirebaseProvider({ children }: { children: React.ReactNode }) {
   const setStudents = useStudentStore((s) => s.setStudents)
@@ -16,6 +17,7 @@ export default function FirebaseProvider({ children }: { children: React.ReactNo
   const setTasks = useTaskStore((s) => s.setTasks)
   const setSponsors = useSponsorStore((s) => s.setSponsors)
   const setContacts = useSponsorStore((s) => s.setContacts)
+  const setFacilities = useFacilityStore((s) => s.setFacilities)
   const initialized = useRef(false)
 
   useEffect(() => {
@@ -32,6 +34,7 @@ export default function FirebaseProvider({ children }: { children: React.ReactNo
       import('@/lib/firestore/fees'),
       import('@/lib/firestore/tasks'),
       import('@/lib/firestore/sponsors'),
+      import('@/lib/firestore/facilities'),
     ]).then(([
       { subscribeStudents },
       { subscribeTeachers },
@@ -39,6 +42,7 @@ export default function FirebaseProvider({ children }: { children: React.ReactNo
       { subscribeFees },
       { subscribeTasks },
       { subscribeSponsors },
+      { subscribeFacilities },
     ]) => {
       unsubs.push(subscribeStudents(setStudents))
       unsubs.push(subscribeTeachers(setTeachers))
@@ -46,10 +50,11 @@ export default function FirebaseProvider({ children }: { children: React.ReactNo
       unsubs.push(subscribeFees(setFees))
       unsubs.push(subscribeTasks(setTasks))
       unsubs.push(subscribeSponsors(setSponsors))
+      unsubs.push(subscribeFacilities(setFacilities))
     })
 
     return () => unsubs.forEach((u) => u())
-  }, [setStudents, setTeachers, setLessons, setFees, setTasks, setSponsors, setContacts])
+  }, [setStudents, setTeachers, setLessons, setFees, setTasks, setSponsors, setContacts, setFacilities])
 
   return <>{children}</>
 }
