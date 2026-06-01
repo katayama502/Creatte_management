@@ -10,6 +10,7 @@ interface SponsorState {
   updateSponsor: (id: string, updates: Partial<Sponsor>) => void;
   deleteSponsor: (id: string) => void;
   setSponsorStatus: (id: string, status: SponsorStatus) => void;
+  reorderSponsors: (activeId: string, overId: string) => void;
   addContact: (contact: Omit<SponsorContact, 'id' | 'createdAt'>) => void;
   deleteContact: (id: string) => void;
   getContactsBySponsor: (sponsorId: string) => SponsorContact[];
@@ -55,6 +56,18 @@ export const useSponsorStore = create<SponsorState>((set, get) => ({
       sponsors: state.sponsors.map((s) => s.id === id ? { ...s, status } : s),
     }));
     import('@/lib/firestore/sponsors').then(({ updateSponsor }) => updateSponsor(id, { status }));
+  },
+
+  reorderSponsors: (activeId, overId) => {
+    set((state) => {
+      const sponsors = [...state.sponsors];
+      const activeIndex = sponsors.findIndex((s) => s.id === activeId);
+      const overIndex = sponsors.findIndex((s) => s.id === overId);
+      if (activeIndex === -1 || overIndex === -1) return state;
+      const [removed] = sponsors.splice(activeIndex, 1);
+      sponsors.splice(overIndex, 0, removed);
+      return { sponsors };
+    });
   },
 
   addContact: (contact) => {

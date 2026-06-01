@@ -33,11 +33,12 @@ const STATUS_OPTIONS: { value: SponsorStatus; label: string; color: string }[] =
 
 interface SponsorModalProps {
   sponsor?: Sponsor;
+  defaultStatus?: SponsorStatus;
   onSave: (data: Omit<Sponsor, 'id' | 'createdAt'>) => void;
   onClose: () => void;
 }
 
-export default function SponsorModal({ sponsor, onSave, onClose }: SponsorModalProps) {
+export default function SponsorModal({ sponsor, defaultStatus = 'pending', onSave, onClose }: SponsorModalProps) {
   const { register, handleSubmit, watch, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: sponsor
@@ -57,7 +58,7 @@ export default function SponsorModal({ sponsor, onSave, onClose }: SponsorModalP
           notes: sponsor.notes ?? '',
         }
       : {
-          status: 'pending',
+          status: defaultStatus,
           amount: 0,
           startDate: new Date().toISOString().split('T')[0],
           fliersPlaced: false,
