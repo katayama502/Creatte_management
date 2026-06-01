@@ -155,7 +155,7 @@ function DroppableColumn({
   return (
     <div
       className={cn(
-        'flex flex-col rounded-xl border-2 transition-all duration-200 min-w-[280px] flex-1 max-h-[calc(100vh-320px)]',
+        'flex flex-col rounded-xl border-2 transition-all duration-200 min-w-[260px] sm:min-w-[280px] flex-1 max-h-[calc(100vh-280px)] md:max-h-[calc(100vh-320px)]',
         bgColor,
         borderColor,
         isDraggingOver && 'border-indigo-400 shadow-lg scale-[1.01]'
@@ -330,21 +330,22 @@ export default function SponsorsPage() {
   return (
     <div className="flex flex-col h-full min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-4 shrink-0">
-        <div className="flex items-center justify-between mb-4">
+      <div className="bg-white border-b border-gray-200 px-4 md:px-6 py-3 md:py-4 shrink-0">
+        <div className="flex items-center justify-between gap-3 mb-3 md:mb-4">
           <div>
             <div className="flex items-center gap-2 mb-0.5">
               <Building2 className="w-5 h-5 text-indigo-600" />
-              <h1 className="text-2xl font-bold text-gray-900">協賛企業管理</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-gray-900">協賛企業管理</h1>
             </div>
             <p className="text-sm text-gray-500">全 {sponsors.length} 社</p>
           </div>
           <button
             onClick={() => openAdd('pending')}
-            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm"
+            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3 md:px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm shrink-0 min-h-[40px]"
           >
             <Plus className="w-4 h-4" />
-            企業を追加
+            <span className="hidden sm:inline">企業を追加</span>
+            <span className="sm:hidden">追加</span>
           </button>
         </div>
 
@@ -366,7 +367,7 @@ export default function SponsorsPage() {
       </div>
 
       {/* Body */}
-      <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-6 min-h-0">
+      <div className="flex-1 overflow-y-auto p-3 md:p-6 flex flex-col gap-4 md:gap-6 min-h-0">
         <SponsorProgressGauge total={sponsors.length} active={activeCount} />
 
         <DndContext
@@ -376,7 +377,7 @@ export default function SponsorsPage() {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <div className="flex gap-4 overflow-x-auto pb-2 flex-1">
+          <div className="flex gap-3 md:gap-4 overflow-x-auto pb-2 flex-1">
             {COLUMNS.map((col) => (
               <DroppableColumn
                 key={col.status}

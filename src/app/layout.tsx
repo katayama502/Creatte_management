@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
+import { MobileNavProvider } from "@/components/layout/MobileNavContext";
 import FirebaseProvider from "@/components/providers/FirebaseProvider";
 
 export const metadata: Metadata = {
@@ -34,21 +35,23 @@ export default function RootLayout({
       </head>
       <body className="antialiased bg-gray-50 min-h-screen">
         <FirebaseProvider>
-          <div className="flex h-screen overflow-hidden">
-            {/* Sidebar - fixed on the left */}
-            <Sidebar />
+          <MobileNavProvider>
+            <div className="flex h-screen overflow-hidden">
+              {/* Sidebar */}
+              <Sidebar />
 
-            {/* Main content area */}
-            <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
-              {/* Top header */}
-              <Header />
+              {/* Main content area */}
+              <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
+                {/* Top header */}
+                <Header />
 
-              {/* Page content */}
-              <main className="flex-1 overflow-y-auto p-6">
-                <div className="max-w-7xl mx-auto w-full">{children}</div>
-              </main>
+                {/* Page content */}
+                <main className="flex-1 overflow-y-auto p-3 md:p-6">
+                  <div className="max-w-7xl mx-auto w-full">{children}</div>
+                </main>
+              </div>
             </div>
-          </div>
+          </MobileNavProvider>
         </FirebaseProvider>
       </body>
     </html>

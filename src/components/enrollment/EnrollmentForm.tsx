@@ -235,7 +235,7 @@ export default function EnrollmentForm({ student, onSuccess }: Props) {
           name="courseFrequency"
           control={control}
           render={({ field }) => (
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {COURSE_OPTIONS.map((opt) => {
                 const isSelected = field.value === opt.freq
                 return (
@@ -480,11 +480,11 @@ function SectionCard({
 }) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden print:break-inside-avoid">
-      <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+      <div className="px-4 md:px-6 py-3 md:py-4 border-b border-gray-100 bg-gray-50/50">
         <h2 className="text-base font-semibold text-gray-900">{title}</h2>
         {subtitle && <p className="text-xs text-gray-500 mt-0.5">{subtitle}</p>}
       </div>
-      <div className="px-6 py-5">{children}</div>
+      <div className="px-4 md:px-6 py-4 md:py-5">{children}</div>
     </div>
   )
 }

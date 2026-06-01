@@ -138,9 +138,9 @@ export default function TeacherModal({ teacher, onClose }: Props) {
     <div
       ref={overlayRef}
       onClick={handleOverlayClick}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm sm:p-4"
     >
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden">
+      <div className="bg-white rounded-t-2xl sm:rounded-2xl shadow-xl w-full max-w-lg max-h-[92vh] sm:max-h-[90vh] flex flex-col overflow-hidden">
         {/* Modal header */}
         <div
           className="px-6 py-4 border-b border-gray-100 flex items-center justify-between flex-shrink-0"
@@ -166,7 +166,7 @@ export default function TeacherModal({ teacher, onClose }: Props) {
         >
           <div className="px-6 py-5 overflow-y-auto flex-1 space-y-5">
             {/* Name */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField label="お名前" error={errors.name?.message} required>
                 <input
                   {...register('name')}
@@ -186,7 +186,7 @@ export default function TeacherModal({ teacher, onClose }: Props) {
             </div>
 
             {/* Email + Phone */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField label="メールアドレス" error={errors.email?.message}>
                 <input
                   {...register('email')}

@@ -134,18 +134,18 @@ export default function StudentDetailModal({
   const TABS: TabType[] = ['基本情報', 'レッスン履歴', '出席記録', '月謝', 'Scratch作品', 'カリキュラム']
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm sm:p-4">
+      <div className="bg-white sm:rounded-2xl rounded-t-2xl shadow-2xl w-full max-w-2xl max-h-[92vh] sm:max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-start justify-between px-6 py-4 border-b border-gray-100">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
-              <span className="text-lg font-bold text-indigo-600">
+        <div className="flex items-start justify-between px-4 md:px-6 py-3 md:py-4 border-b border-gray-100">
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-indigo-100 rounded-full flex items-center justify-center shrink-0">
+              <span className="text-base md:text-lg font-bold text-indigo-600">
                 {student.name.charAt(0)}
               </span>
             </div>
             <div>
-              <h2 className="text-lg font-bold text-gray-900">{student.name}</h2>
+              <h2 className="text-base md:text-lg font-bold text-gray-900">{student.name}</h2>
               <p className="text-xs text-gray-400">{student.nameKana}</p>
             </div>
           </div>
@@ -157,14 +157,14 @@ export default function StudentDetailModal({
           </button>
         </div>
 
-        {/* Tab strip */}
-        <div className="flex border-b border-gray-100 px-6">
+        {/* Tab strip — scrollable on mobile */}
+        <div className="flex border-b border-gray-100 px-2 md:px-6 overflow-x-auto scrollbar-hidden">
           {TABS.map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={cn(
-                'px-4 py-2.5 text-sm font-medium border-b-2 transition-colors',
+                'px-2.5 md:px-4 py-2 md:py-2.5 text-xs md:text-sm font-medium border-b-2 transition-colors whitespace-nowrap shrink-0',
                 activeTab === tab
                   ? 'border-indigo-500 text-indigo-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -175,7 +175,7 @@ export default function StudentDetailModal({
           ))}
         </div>
 
-        <div className="flex-1 overflow-y-auto px-6 py-4 space-y-6">
+        <div className="flex-1 overflow-y-auto px-4 md:px-6 py-3 md:py-4 space-y-5 md:space-y-6">
           {/* ------------------------------------------------------------------ */}
           {/* Tab: 基本情報 */}
           {/* ------------------------------------------------------------------ */}

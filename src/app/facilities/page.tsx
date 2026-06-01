@@ -81,27 +81,28 @@ export default function FacilitiesPage() {
   return (
     <div className="flex flex-col h-full min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-4 shrink-0">
-        <div className="flex items-center justify-between">
+      <div className="bg-white border-b border-gray-200 px-4 md:px-6 py-3 md:py-4 shrink-0">
+        <div className="flex items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2 mb-0.5">
               <Building className="w-5 h-5 text-indigo-600" />
-              <h1 className="text-2xl font-bold text-gray-900">施設管理</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-gray-900">施設管理</h1>
             </div>
             <p className="text-sm text-gray-500">全 {facilities.length} 施設（使用可能 {active.length}）</p>
           </div>
           <button
             onClick={() => { setEditingFacility(undefined); setModalOpen(true); }}
-            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm"
+            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3 md:px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm shrink-0 min-h-[40px]"
           >
             <Plus className="w-4 h-4" />
-            施設を追加
+            <span className="hidden sm:inline">施設を追加</span>
+            <span className="sm:hidden">追加</span>
           </button>
         </div>
       </div>
 
       {/* Body */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-3 md:p-6">
         {facilities.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mb-4">

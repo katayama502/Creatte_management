@@ -1,8 +1,8 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import {
-  startOfWeek, addDays, format, isToday,
+  startOfWeek, addDays, subDays, format, isToday,
 } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { FacilityReservation, FacilityColor } from '@/types';
@@ -78,8 +78,20 @@ interface Props {
 
 export default function WeekView({ currentDate, reservations, facilityColor, onSlotClick, onReservationClick }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  // Mobile: 3 days centered on currentDate. Desktop: full week starting Sunday.
   const weekStart = startOfWeek(currentDate, { weekStartsOn: 0 });
-  const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
+  const weekDays = isMobile
+    ? [subDays(currentDate, 1), currentDate, addDays(currentDate, 1)]
+    : Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   const DOW = ['日', '月', '火', '水', '木', '金', '土'];
 
   useEffect(() => {
@@ -100,16 +112,17 @@ export default function WeekView({ currentDate, reservations, facilityColor, onS
     <div className="flex flex-col flex-1 min-h-0">
       {/* Header row */}
       <div className="flex border-b border-gray-200 shrink-0">
-        <div className="w-14 shrink-0" />
+        <div className="w-10 sm:w-14 shrink-0" />
         {weekDays.map((day, i) => {
           const todayDay = isToday(day);
+          const dow = day.getDay(); // 0=Sun, 6=Sat
           return (
             <div key={i} className="flex-1 py-2 text-center border-l border-gray-100 first:border-0">
               <p className={cn(
                 'text-xs',
-                i === 0 ? 'text-red-500' : i === 6 ? 'text-blue-500' : 'text-gray-500'
+                dow === 0 ? 'text-red-500' : dow === 6 ? 'text-blue-500' : 'text-gray-500'
               )}>
-                {DOW[i]}
+                {DOW[dow]}
               </p>
               <div className="flex justify-center mt-0.5">
                 <span className={cn(
@@ -128,7 +141,7 @@ export default function WeekView({ currentDate, reservations, facilityColor, onS
       <div ref={scrollRef} className="flex-1 overflow-y-auto">
         <div className="flex" style={{ height: totalHeight }}>
           {/* Time labels */}
-          <div className="w-14 shrink-0 relative">
+          <div className="w-10 sm:w-14 shrink-0 relative">
             {HOURS.map((h, i) => (
               h.endsWith(':00') && (
                 <div

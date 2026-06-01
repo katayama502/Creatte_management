@@ -21,10 +21,10 @@ export default function EnrollmentPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-3 md:px-4 py-4 md:py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">入会申し込み管理</h1>
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-xl md:text-2xl font-bold text-gray-900">入会申し込み管理</h1>
           <p className="mt-1 text-sm text-gray-500">
             体験レッスン完了後の入会申し込み手続きを管理します
           </p>
@@ -126,7 +126,7 @@ function StatusBadge({ status }: { status: Student['status'] }) {
 
 function StudentRow({ student }: { student: Student }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 px-5 py-4 flex items-center gap-4">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 px-3 md:px-5 py-4 flex items-center gap-3 md:gap-4">
       {/* Avatar */}
       <div className="flex-shrink-0 w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center">
         <span className="text-indigo-700 font-bold text-sm">
@@ -136,11 +136,11 @@ function StudentRow({ student }: { student: Student }) {
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-0.5">
+        <div className="flex items-center gap-2 mb-0.5 flex-wrap">
           <span className="font-semibold text-gray-900">{student.name}</span>
           <StatusBadge status={student.status} />
         </div>
-        <div className="flex items-center gap-4 text-xs text-gray-500">
+        <div className="flex items-center gap-2 md:gap-4 text-xs text-gray-500 flex-wrap">
           <span>{student.nameKana}</span>
           {student.trialDate && (
             <span>体験日: {formatDateJa(student.trialDate)}</span>
@@ -154,12 +154,13 @@ function StudentRow({ student }: { student: Student }) {
       {/* Action */}
       <Link
         href={`/enrollment/${student.id}`}
-        className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+        className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 md:px-4 py-2 min-h-[44px] bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
-        申し込みフォームを開く
+        <span className="hidden sm:inline">申し込みフォームを開く</span>
+        <span className="sm:hidden">開く</span>
       </Link>
     </div>
   )
