@@ -246,6 +246,42 @@ export interface CurriculumProgress {
   notes?: string;
 }
 
+// ============================================================
+// Facility types (施設管理)
+// ============================================================
+
+export type FacilityColor =
+  | 'indigo' | 'blue' | 'cyan' | 'teal' | 'green'
+  | 'yellow' | 'orange' | 'red' | 'pink' | 'purple';
+
+export interface Facility {
+  id: string;
+  name: string;
+  description?: string;
+  capacity?: number;
+  color: FacilityColor;
+  floor?: string;
+  notes?: string;
+  active: boolean;
+  createdAt: string;
+}
+
+export interface FacilityReservation {
+  id: string;
+  facilityId: string;
+  title: string;
+  /** ISO date string: YYYY-MM-DD */
+  date: string;
+  /** HH:mm */
+  startTime: string;
+  /** HH:mm */
+  endTime: string;
+  reservedBy?: string;
+  description?: string;
+  color?: FacilityColor;
+  createdAt: string;
+}
+
 // ===== Settings =====
 export interface Course {
   id: string

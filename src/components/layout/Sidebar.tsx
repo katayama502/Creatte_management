@@ -15,6 +15,7 @@ import {
   ChevronRight,
   CheckSquare,
   Building2,
+  Building,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -35,6 +36,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "スケジュール", href: "/schedule", icon: Calendar },
   { label: "入会申し込み", href: "/enrollment", icon: FileText },
   { label: "協賛企業管理", href: "/sponsors", icon: Building2 },
+  { label: "施設管理", href: "/facilities", icon: Building },
   { label: "講師管理", href: "/teachers", icon: GraduationCap },
 ];
 
