@@ -146,13 +146,13 @@ export default function ReservationModal({
               <input
                 type="date"
                 {...register('date')}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               {errors.date && <p className="text-red-500 text-xs">{errors.date.message}</p>}
               <div className="flex gap-2 items-center">
                 <select
                   {...register('startTime')}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   {TIME_SLOTS.map((t) => (
                     <option key={t} value={t}>{t}</option>
@@ -161,7 +161,7 @@ export default function ReservationModal({
                 <span className="text-gray-400 text-sm">〜</span>
                 <select
                   {...register('endTime')}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   {TIME_SLOTS.map((t) => (
                     <option key={t} value={t}>{t}</option>
@@ -177,7 +177,7 @@ export default function ReservationModal({
             <User className="w-5 h-5 text-gray-400 shrink-0" />
             <input
               {...register('reservedBy')}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="予約者名"
             />
           </div>
@@ -188,7 +188,7 @@ export default function ReservationModal({
             <textarea
               {...register('description')}
               rows={2}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
               placeholder="メモを追加"
             />
           </div>
