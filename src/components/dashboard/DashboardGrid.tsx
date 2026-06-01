@@ -11,6 +11,8 @@ import RecentStudentsPanel from './panels/RecentStudentsPanel';
 import UpcomingLessonsPanel from './panels/UpcomingLessonsPanel';
 import TeacherLoadPanel from './panels/TeacherLoadPanel';
 import FeeStatusPanel from './panels/FeeStatusPanel';
+import TasksPanel from './panels/TasksPanel';
+import SponsorProgressPanel from './panels/SponsorProgressPanel';
 
 function PanelContent({ type }: { type: ExtendedDashboardPanel['type'] }) {
   switch (type) {
@@ -19,6 +21,8 @@ function PanelContent({ type }: { type: ExtendedDashboardPanel['type'] }) {
     case 'upcoming_lessons': return <UpcomingLessonsPanel />;
     case 'teacher_load': return <TeacherLoadPanel />;
     case 'fee_status': return <FeeStatusPanel />;
+    case 'tasks': return <TasksPanel />;
+    case 'sponsor_progress': return <SponsorProgressPanel />;
     default: return null;
   }
 }

@@ -144,6 +144,108 @@ export interface ApiResponse<T> {
   error?: string;
 }
 
+// ============================================================
+// Task types (サイボウズ ToDo 参考)
+// ============================================================
+
+export type TaskPriority = 'high' | 'medium' | 'low';
+export type TaskStatus = 'pending' | 'in_progress' | 'completed';
+export type TaskCategory = 'kurietto' | 'techice' | 'training' | 'other';
+export type RecurringInterval = 'weekly' | 'monthly';
+
+export interface Task {
+  id: string;
+  title: string;
+  description?: string;
+  /** Teacher/staff ID */
+  assigneeId?: string;
+  /** ISO date string: YYYY-MM-DD */
+  dueDate?: string;
+  priority: TaskPriority;
+  status: TaskStatus;
+  category: TaskCategory;
+  isRecurring?: boolean;
+  recurringInterval?: RecurringInterval;
+  /** Related student or sponsor ID */
+  relatedId?: string;
+  notes?: string;
+  completedAt?: string;
+  createdAt: string;
+}
+
+// ============================================================
+// Sponsor types (協賛企業管理)
+// ============================================================
+
+export type SponsorStatus = 'active' | 'pending' | 'inactive';
+export type ContactMethod = 'visit' | 'email' | 'phone' | 'other';
+
+export interface Sponsor {
+  id: string;
+  companyName: string;
+  contactName: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  industry?: string;
+  /** Annual sponsorship amount in yen */
+  amount: number;
+  /** ISO date string */
+  startDate: string;
+  endDate?: string;
+  status: SponsorStatus;
+  fliersPlaced?: boolean;
+  cardsDistributed?: number;
+  nextContactDate?: string;
+  notes?: string;
+  createdAt: string;
+}
+
+export interface SponsorContact {
+  id: string;
+  sponsorId: string;
+  /** ISO date string */
+  date: string;
+  method: ContactMethod;
+  summary: string;
+  nextAction?: string;
+  staffName?: string;
+  createdAt: string;
+}
+
+// ============================================================
+// Scratch work types (クリエット独自)
+// ============================================================
+
+export interface ScratchWork {
+  id: string;
+  studentId: string;
+  title: string;
+  /** Scratch project URL */
+  url?: string;
+  description?: string;
+  /** ISO date string: YYYY-MM-DD */
+  createdDate: string;
+  tags?: string[];
+  /** Featured in portfolio */
+  isPortfolio?: boolean;
+  createdAt: string;
+}
+
+// ============================================================
+// Curriculum progress types (カリキュラム進捗)
+// ============================================================
+
+export interface CurriculumProgress {
+  id: string;
+  studentId: string;
+  courseId?: string;
+  /** e.g. "Scratch入門 第3章" */
+  materialName: string;
+  /** ISO date string */
+  completedAt: string;
+  notes?: string;
+}
+
 // ===== Settings =====
 export interface Course {
   id: string

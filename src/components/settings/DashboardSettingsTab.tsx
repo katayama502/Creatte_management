@@ -13,6 +13,8 @@ const PANEL_DESCRIPTIONS: Record<ExtendedPanelType, string> = {
   upcoming_lessons: '直近のレッスン予定',
   teacher_load: '各講師の稼働率・担当生徒数',
   fee_status: '今月の月謝回収状況',
+  tasks: '未完了タスクと期限超過アラート',
+  sponsor_progress: '協賛企業の目標達成進捗ゲージ',
 }
 
 // ============================================================
